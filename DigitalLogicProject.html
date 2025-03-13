@@ -1,0 +1,167 @@
+<!-- A detailed overview of my Digital Logic Project -->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="description" content="This is a portfolio website for David Denny">
+        <title>David Denny</title>
+        <link rel="icon" href="robotPicture.png" type="image/x-icon">
+        <style> body {text-align: center; justify-content: center;}</style>
+        <style>
+            table {
+                width: 10;
+                border-collapse: collapse;
+                text-align: center;
+                margin: 0 auto;
+            }
+            th, td {
+                border: 1px solid rgb(0, 0, 0);
+                padding: 10px;
+            }
+            th, td:first-child {
+                background-color: lightgrey; /* Light grey for first row and first column */
+            }
+        </style>
+    </head>
+    <body>
+        <h1>David Denny's Portfolio</h1>
+        <a href="index.html"><h3>Back to the home page</h3></a>
+        <hr/>
+        <h2><u>Floating Point Adder Calculator</u>:</h2>
+        <h3><u>Intoduction and Theory</u>:</h3>
+        The goal of this term project is to implement a 16-bit Floating Point Adder, utilizing IEEE’s <br>
+        Standard 754 Floating Point Number Representation. This calculator was created on an Intel Altera <br>
+        FPGA. More specifically, the Terasic Technologies MAX DE-10 FPGA was used. This project is the <br>
+        culmination of the Digital Logic courses I’ve taken. In addition to providing a greater <br>
+        understanding of general digital logic concepts, this project allowed for much more practice <br>
+        with FPGAs and the SystemVerilog programming language. A short demonstration of the resulting <br>
+        calculator can be found below:<br><br>
+
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/PNgDAPSwmi4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>        <br><br>
+
+        As mentioned, the floating point calculator follows IEEE’s floating point standards, meaning <br>
+        the resulting output from these calculations follow the below format, and calculations follow the <br>
+        recommended process for adding floating point numbers. Below is a reference for the format of <br>
+        these floating point numbers, including ranges for the sign, exponent, and mantissa/fraction bits:<br><br>
+
+        <img width="400" height="190" src="IEEEFloatingPointRepresentation.png" alt="A picture IEEE floating point representation" /><br><br>
+
+        The calculator is implemented in SystemVerilog on an Altera FPGA, following the data flow from <br>
+        the below diagram. This diagram outlines the general process for which our floating point numbers <br>
+        are summed together. Each block on the diagram describes a different implemented module/component <br>
+        of the calculator. Each of these components accomplish various different processes in the <br>
+        addition’s data flow. Most of these components are separated into their own SystemVerilog <br>
+        module/file, and a list of these components can also be found below:<br><br>
+
+        <img width="625" height="540" src="FloatingPointAdderDiagram.jpg" alt="A diagram of the calculator's data flow" /><br><br>
+
+        - <b>Exponent Subtractor</b> (<i>ExponentSubtractorFiveBit.sv</i>)<br>
+        - <b>Modular Multiplexer</b> (3 Instances) (<i>modularMux.sv</i>)<br>
+        - <b>Right Barrel Shifter</b> (2 Instances) (<i>ElevenBitRightShifter.sv</i>)<br>
+        - <b>Group Carry Look-Ahead Adder</b> (<i>TwelveBitGCLA.sv</i>)<br>
+        - <b>Controlled Incrementer</b> (<i>FiveBitIncrementer.sv</i>)<br>
+        - <b>LCD Display Configurator</b> (<i>LCD_Board_Test_LCD.sv</i>)<br>
+        - <b>Keypad Configurator</b> (<i>InputUnit.sv and clock_div.sv</i>)<br><br>
+
+        When all of these components and their dependencies are combined and instantiated, the floating <br>
+        point calculator is complete. Demonstrations for the functioning calculator are shown in the above <br>
+        video, and the chosen test case are found below:<br><br>
+
+        <h4>Test Case 1: 3.75 + 5.125 = 8.875</h4>
+        <table>
+            <tr>
+                <th></th> <!-- Empty top-left corner -->
+                <th>Decimal Representation</th>
+                <th>Hex Representation</th>
+                <th>Binary Representation</th>
+            </tr>
+            <tr>
+                <th>Input A</th>
+                <td>3.75</td>
+                <td>0x4380</td>
+                <td>0 10000 1110000000</td>
+            </tr>
+            <tr>
+                <th>Input B</th>
+                <td>5.125</td>
+                <td>0x4520</td>
+                <td>0 10001 0100100000</td>
+            </tr>
+            <tr>
+                <th>Result R</th>
+                <td>8.875</td>
+                <td>N/A</td>
+                <td><b>0 10010 0001110000</b></td>
+            </tr>
+        </table>
+        
+        <h4>Test Case 1: 9.5 + 0.5625 = 10.0625</h4>
+        <table>
+            <tr>
+                <th></th> <!-- Empty top-left corner -->
+                <th>Decimal Representation</th>
+                <th>Hex Representation</th>
+                <th>Binary Representation</th>
+            </tr>
+            <tr>
+                <th>Input A</th>
+                <td>9.5</td>
+                <td>0x48C0</td>
+                <td>0 10010 0011000000</td>
+            </tr>
+            <tr>
+                <th>Input B</th>
+                <td>0.5625</td>
+                <td>0x3880</td>
+                <td>0 01110 0010000000</td>
+            </tr>
+            <tr>
+                <th>Result R</th>
+                <td>10.0625</td>
+                <td>N/A</td>
+                <td><b>0 10010 0100001000</b></td>
+            </tr>
+        </table>
+
+        <br><hr/>
+
+        <h3><u>Implementation and Code</u>:</h3>
+
+        <i>This section of the report will delve into my implementation of the coding/software portion of </i><br>
+        <i>the project. As described above, most of the calculator’s components are separated into their own </i><br>
+        <i>module files. Below is a download link for the zipped folder, containing all of the SystemVerilog </i><br>
+        <i>files used in the calculator’s implementation. Utilized FPGA pin declarations are not included. </i><br>
+        <i>Please feel free to read through the relevant files as necessary. These files can also be found </i><br>
+        <i>in my GitHub:</i><br>
+
+        <a href="David_Denny_DL2_Project.zip" download><h3>David Denny Zipped Altera FPGA Project Folder</h3></a>
+
+        <i>Below are just a couple more notes for some files that deserve some additional explanation:</i><br>
+        - The calculator component instantiations can be found in LCD_Board_Test_LCD.sv. In this way, <br>
+        LCD_Board_Test_LCD.sv can be considered the top module for this project.<br>
+        - Input values are registered and obtained from using a connected 4x4 keypad array in a hexadecimal <br>
+        configuration. The process for which these input values are obtained can be viewed in InputUnit.sv <br>
+        and clock_div.sv.<br>
+        - Additionally, the outputted values from the calculator are displayed on a connected LCD display <br>
+        using included libraries. Instantiations of this functionality can be found in <br>
+        LCD_Board_Test_LCD.sv, but the library files themselves are not included. This functionality <br>
+        can also be seen in the video demonstration.<br>
+        - Lastly, condition code logic for Underflow and Overflow are implemented. Those signals simply <br>
+        drive two LEDs on the FPGA.<br><br>
+
+        <hr/>
+
+        <h3><u>Conclusion</u>:</h3>
+
+        <img width="350" height="580" src="FloatingPointAdderPicture.JPEG" alt="A picture of the implemented calculator" /><br><br>
+
+        Overall, this lab is the culmination of many Digital Logic concepts studied and practiced <br>
+        throughout my relevant courses. In its totality, it is a very in-depth and complicated project, <br>
+        and has enabled me to practice writing and understanding SystemVerilog, in addition to the <br>
+        concepts of Digital Logic in general.<br><br>
+
+        <hr/>
+        <a href="index.html"><h3>Back to the home page</h3></a>
+    </body>
+</html>

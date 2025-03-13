@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minesweeper</title>
+    <style>
+        body {
+            font-family: monospace;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        #game-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        #board {
+            display: grid;
+            grid-template-columns: repeat(10, 30px);
+            grid-template-rows: repeat(10, 30px);
+            gap: 2px;
+        }
+        .tile {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #ccc;
+            border: 1px solid #999;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .revealed {
+            background-color: #eee;
+        }
+        .flagged::after {
+            content: "🚩";
+        }
+        .mine {
+            background-color: #f88;
+        }
+        button {
+            padding: 8px 16px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        #leaderboard {
+            margin-top: 20px;
+        }
+        #board-container {
+            margin: 20px 0;
+        }
+        #coords {
+            display: grid;
+            grid-template-columns: 30px repeat(10, 30px);
+            grid-template-rows: 30px;
+            gap: 2px;
+        }
+        .coord-row {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        .coord-col {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        .game-grid {
+            display: grid;
+            grid-template-columns: 30px auto;
+            grid-template-rows: auto;
+            gap: 2px;
+        }
+        .row-labels {
+            display: grid;
+            grid-template-rows: repeat(10, 30px);
+            gap: 2px;
+        }
+        .menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        #difficulty-btns {
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <h1>Minesweeper (Version 2)</h1>
+        
+        <div id="main-menu" class="menu">
+            <button id="play-btn">1. Play</button>
+            <button id="leaderboard-btn">2. Leaderboard</button>
+            <button id="difficulty-btn">3. Change Difficulty</button>
+            <button id="how-to-play-btn">4. How To Play</button>
+        </div>
+        
+        <div id="difficulty-menu" class="menu" style="display: none;">
+            <h2>Change Difficulty</h2>
+            <p id="current-difficulty">The difficulty is currently set to NORMAL.</p>
+            <div id="difficulty-btns">
+                <button id="easy-btn">Easy (5 mines)</button>
+                <button id="normal-btn">Normal (10 mines)</button>
+                <button id="hard-btn">Hard (20 mines)</button>
+            </div>
+            <button id="back-btn">Back to Menu</button>
+        </div>
+        
+        <div id="how-to-play" style="display: none;">
+            <h3>How To Play:</h3>
+            <p>In Minesweeper, the goal is to clear a grid of hidden tiles without uncovering any mines. Each uncovered tiles shows a number indicating how many mines are adjacent to it, helping you deduce where mines are likely located.</p>
+            <p>Use this information to flag tiles you believe contain mines, which prevents accidentally uncovering them. Once you've flagged all the mines and uncovered the rest of the grid, you win the game! If you uncover a mine, the game ends.</p>
+            <h3>Controls:</h3>
+            <ul>
+                <li>Left-click a tile to reveal it</li>
+                <li>Right-click a tile to flag/unflag it</li>
+            </ul>
+            <h3>Other Information:</h3>
+            <p>The shown leaderboard is local to your machine, and does not distinguish between completion times on different difficulties.</p>
+            <p>This program was generated with the assistance of an HTML converter.</p>
+            <p>Have fun!</p>
+            <button id="back-from-rules-btn">Back to Menu</button>
+        </div>
+        
+        <div id="game-screen" style="display: none;">
+            <div id="game-info">
+                <div id="mine-counter">Mines: 10</div>
+                <div id="timer">Time: 0s</div>
+            </div>
+            
+            <div id="board-container">
+                <!-- Column coordinates (A-J) -->
+                <div id="coords">
+                    <div class="coord-col"></div>
+                    <div class="coord-col">A</div>
+                    <div class="coord-col">B</div>
+                    <div class="coord-col">C</div>
+                    <div class="coord-col">D</div>
+                    <div class="coord-col">E</div>
+                    <div class="coord-col">F</div>
+                    <div class="coord-col">G</div>
+                    <div class="coord-col">H</div>
+                    <div class="coord-col">I</div>
+                    <div class="coord-col">J</div>
+                </div>
+                
+                <!-- Game grid with row coordinates -->
+                <div class="game-grid">
+                    <!-- Row coordinates (0-9) -->
+                    <div class="row-labels">
+                        <div class="coord-row">0</div>
+                        <div class="coord-row">1</div>
+                        <div class="coord-row">2</div>
+                        <div class="coord-row">3</div>
+                        <div class="coord-row">4</div>
+                        <div class="coord-row">5</div>
+                        <div class="coord-row">6</div>
+                        <div class="coord-row">7</div>
+                        <div class="coord-row">8</div>
+                        <div class="coord-row">9</div>
+                    </div>
+                    <!-- Game board -->
+                    <div id="board"></div>
+                </div>
+            </div>
+            
+            <div id="message"></div>
+            <button id="back-to-menu-btn">Back to Menu</button>
+        </div>
+        
+        <div id="leaderboard-container" style="display: none;">
+            <h2>Leaderboard</h2>
+            <table id="leaderboard">
+                <thead>
+                    <tr>
+                        <th>RANK</th>
+                        <th>NAME</th>
+                        <th>TIME (s)</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboard-body">
+                    <!-- Leaderboard entries will be displayed here -->
+                </tbody>
+            </table>
+            <button id="back-from-leaderboard-btn">Back to Menu</button>
+            <button id="clear-leaderboard-btn">Clear Leaderboard</button>
+        </div>
+        
+        <div id="win-screen" style="display: none;">
+            <h2>YOU WIN!</h2>
+            <p id="win-time"></p>
+            <div>
+                <label for="player-name">Enter your name (3 letters):</label>
+                <input type="text" id="player-name" maxlength="3">
+                <button id="submit-score-btn">Submit</button>
+            </div>
+            <div id="name-error" style="color: red; display: none;">
+                Please enter exactly 3 letters.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class Minesweeper {
+            // Class to hold the attributes of a tile on the gameBoard.
+            static Tile = class {
+                constructor() {
+                    this.revealed = false;    // True when the player reveals the tile.
+                    this.mine = false;        // True if there is a mine on the tile.
+                    this.flagged = false;     // True when the player flags the tile.
+                    this.surroundingMines = 0; // Holds the number of mines surrounding the tile.
+                }
+            }
+
+            // Class to hold the attributes of each player on the leaderboard.
+            static Player = class {
+                constructor(name, bestTime) {
+                    this.name = name || "AAA";      // Default name.
+                    this.bestTime = bestTime || 9999;  // Default best time.
+                }
+            }
+
+            constructor() {
+                // Game elements
+                this.board = document.getElementById('board');
+                this.messageEl = document.getElementById('message');
+                this.mineCounterEl = document.getElementById('mine-counter');
+                this.timerEl = document.getElementById('timer');
+                this.currentDifficultyEl = document.getElementById('current-difficulty');
+                
+                // Game state
+                this.boardData = [];
+                this.mineDifficulty = 10; // Default difficulty of 10 mines = normal
+                this.gameOver = false;
+                this.firstTurn = true;
+                this.startTime = 0;
+                this.timerInterval = null;
+                this.elapsedTime = 0;
+                
+                // Bind event handlers
+                this.setupEventListeners();
+                
+                // Initialize leaderboard from localStorage
+                this.initializeLeaderboard();
+                
+                // Show main menu initially
+                this.showMainMenu();
+            }
+            
+            setupEventListeners() {
+                // Main menu buttons
+                document.getElementById('play-btn').addEventListener('click', () => this.startGame());
+                document.getElementById('leaderboard-btn').addEventListener('click', () => this.showLeaderboard());
+                document.getElementById('difficulty-btn').addEventListener('click', () => this.showDifficultyMenu());
+                document.getElementById('how-to-play-btn').addEventListener('click', () => this.showHowToPlay());
+                
+                // Difficulty menu buttons
+                document.getElementById('easy-btn').addEventListener('click', () => this.changeDifficulty(5));
+                document.getElementById('normal-btn').addEventListener('click', () => this.changeDifficulty(10));
+                document.getElementById('hard-btn').addEventListener('click', () => this.changeDifficulty(20));
+                document.getElementById('back-btn').addEventListener('click', () => this.showMainMenu());
+                
+                // Game screen buttons
+                document.getElementById('back-to-menu-btn').addEventListener('click', () => {
+                    this.stopTimer();
+                    this.showMainMenu();
+                });
+                
+                // Rules screen button
+                document.getElementById('back-from-rules-btn').addEventListener('click', () => this.showMainMenu());
+                
+                // Leaderboard screen buttons
+                document.getElementById('back-from-leaderboard-btn').addEventListener('click', () => this.showMainMenu());
+                document.getElementById('clear-leaderboard-btn').addEventListener('click', () => this.clearLeaderboard());
+                
+                // Win screen buttons
+                document.getElementById('submit-score-btn').addEventListener('click', () => this.submitScore());
+            }
+            
+            // Show / hide different screens
+            showMainMenu() {
+                document.getElementById('main-menu').style.display = 'flex';
+                document.getElementById('difficulty-menu').style.display = 'none';
+                document.getElementById('game-screen').style.display = 'none';
+                document.getElementById('how-to-play').style.display = 'none';
+                document.getElementById('leaderboard-container').style.display = 'none';
+                document.getElementById('win-screen').style.display = 'none';
+            }
+            
+            showDifficultyMenu() {
+                document.getElementById('main-menu').style.display = 'none';
+                document.getElementById('difficulty-menu').style.display = 'flex';
+                
+                // Update current difficulty text
+                if (this.mineDifficulty === 5) {
+                    this.currentDifficultyEl.textContent = "The difficulty is currently set to EASY.";
+                } else if (this.mineDifficulty === 10) {
+                    this.currentDifficultyEl.textContent = "The difficulty is currently set to NORMAL.";
+                } else if (this.mineDifficulty === 20) {
+                    this.currentDifficultyEl.textContent = "The difficulty is currently set to HARD.";
+                }
+            }
+            
+            showHowToPlay() {
+                document.getElementById('main-menu').style.display = 'none';
+                document.getElementById('how-to-play').style.display = 'block';
+            }
+            
+            showLeaderboard() {
+                document.getElementById('main-menu').style.display = 'none';
+                document.getElementById('leaderboard-container').style.display = 'block';
+                
+                const leaderboard = this.readLeaderboard();
+                const leaderboardBody = document.getElementById('leaderboard-body');
+                leaderboardBody.innerHTML = '';
+                
+                if (leaderboard.length === 0) {
+                    const row = document.createElement('tr');
+                    row.innerHTML = '<td colspan="3">There is currently no recorded data. Play some games!</td>';
+                    leaderboardBody.appendChild(row);
+                } else {
+                    leaderboard.forEach((player, index) => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${index + 1}</td>
+                            <td>${player.name}</td>
+                            <td>${player.bestTime.toFixed(1)}</td>
+                        `;
+                        leaderboardBody.appendChild(row);
+                    });
+                }
+            }
+            
+            clearLeaderboard() {
+                if (confirm("Are you sure you want to clear the leaderboard? This cannot be undone.")) {
+                    localStorage.removeItem('minesweeper-leaderboard');
+                    this.initializeLeaderboard();
+                    this.showLeaderboard();
+                }
+            }
+            
+            changeDifficulty(difficulty) {
+                this.mineDifficulty = difficulty;
+                
+                let difficultyName;
+                if (difficulty === 5) {
+                    difficultyName = "EASY";
+                } else if (difficulty === 10) {
+                    difficultyName = "NORMAL";
+                } else {
+                    difficultyName = "HARD";
+                }
+                
+                this.currentDifficultyEl.textContent = `The difficulty is currently set to ${difficultyName}.`;
+                setTimeout(() => this.showMainMenu(), 1000);
+            }
+            
+            startGame() {
+                this.gameOver = false;
+                this.firstTurn = true;
+                this.elapsedTime = 0;
+                
+                document.getElementById('main-menu').style.display = 'none';
+                document.getElementById('game-screen').style.display = 'block';
+                
+                this.mineCounterEl.textContent = `Mines: ${this.mineDifficulty}`;
+                this.timerEl.textContent = 'Time: 0s';
+                this.messageEl.textContent = '';
+                
+                this.createGameBoard();
+                this.renderBoard();
+            }
+            
+            startTimer() {
+                this.startTime = Date.now();
+                this.stopTimer(); // Clear any existing interval
+                
+                this.timerInterval = setInterval(() => {
+                    this.elapsedTime = (Date.now() - this.startTime) / 1000;
+                    this.timerEl.textContent = `Time: ${this.elapsedTime.toFixed(1)}s`;
+                }, 100);
+            }
+            
+            stopTimer() {
+                if (this.timerInterval) {
+                    clearInterval(this.timerInterval);
+                    this.timerInterval = null;
+                }
+            }
+            
+            createGameBoard() {
+                // Create a 10x10 array of Tile objects
+                this.boardData = [];
+                for (let i = 0; i < 10; i++) {
+                    this.boardData[i] = [];
+                    for (let j = 0; j < 10; j++) {
+                        this.boardData[i][j] = new Minesweeper.Tile();
+                    }
+                }
+                
+                // Place mines randomly
+                let minesPlaced = 0;
+                while (minesPlaced < this.mineDifficulty) {
+                    const row = Math.floor(Math.random() * 10);
+                    const col = Math.floor(Math.random() * 10);
+                    
+                    if (!this.boardData[row][col].mine) {
+                        this.boardData[row][col].mine = true;
+                        this.boardData[row][col].surroundingMines = -1;
+                        minesPlaced++;
+                    }
+                }
+                
+                // Calculate surrounding mines for each tile
+                for (let i = 0; i < 10; i++) {
+                    for (let j = 0; j < 10; j++) {
+                        if (this.boardData[i][j].mine) continue;
+                        
+                        let count = 0;
+                        for (let x = -1; x <= 1; x++) {
+                            for (let y = -1; y <= 1; y++) {
+                                const ni = i + x;
+                                const nj = j + y;
+                                if (ni >= 0 && ni < 10 && nj >= 0 && nj < 10 && this.boardData[ni][nj].mine) {
+                                    count++;
+                                }
+                            }
+                        }
+                        this.boardData[i][j].surroundingMines = count;
+                    }
+                }
+            }
+            
+            renderBoard() {
+                this.board.innerHTML = '';
+                
+                for (let i = 0; i < 10; i++) {
+                    for (let j = 0; j < 10; j++) {
+                        const tile = document.createElement('div');
+                        tile.className = 'tile';
+                        tile.dataset.row = i;
+                        tile.dataset.col = j;
+                        
+                        if (this.boardData[i][j].revealed) {
+                            tile.classList.add('revealed');
+                            
+                            if (this.boardData[i][j].mine) {
+                                tile.classList.add('mine');
+                                tile.textContent = '*';
+                            } else if (this.boardData[i][j].surroundingMines > 0) {
+                                tile.textContent = this.boardData[i][j].surroundingMines;
+                                
+                                // Add color based on number
+                                const colors = ['blue', 'green', 'red', 'purple', 'maroon', 'turquoise', 'black', 'gray'];
+                                tile.style.color = colors[this.boardData[i][j].surroundingMines - 1] || 'black';
+                            }
+                        } else if (this.boardData[i][j].flagged) {
+                            tile.classList.add('flagged');
+                        }
+                        
+                        // Left click to reveal
+                        tile.addEventListener('click', (e) => {
+                            if (this.gameOver) return;
+                            const row = parseInt(e.target.dataset.row);
+                            const col = parseInt(e.target.dataset.col);
+                            this.revealTile(row, col);
+                        });
+                        
+                        // Right click to flag
+                        tile.addEventListener('contextmenu', (e) => {
+                            e.preventDefault();
+                            if (this.gameOver) return;
+                            const row = parseInt(e.target.dataset.row);
+                            const col = parseInt(e.target.dataset.col);
+                            this.toggleFlag(row, col);
+                        });
+                        
+                        this.board.appendChild(tile);
+                    }
+                }
+            }
+            
+            revealTile(row, col) {
+                const tile = this.boardData[row][col];
+                
+                // Do nothing if tile is already revealed or flagged
+                if (tile.revealed || tile.flagged) return;
+                
+                // If this is the first click, start the timer
+                if (this.firstTurn) {
+                    this.startTimer();
+                    
+                    // Ensure first click is never a mine
+                    if (tile.mine) {
+                        // Find a non-mine tile to swap with
+                        let safeRow, safeCol;
+                        do {
+                            safeRow = Math.floor(Math.random() * 10);
+                            safeCol = Math.floor(Math.random() * 10);
+                        } while (this.boardData[safeRow][safeCol].mine);
+                        
+                        // Swap tiles
+                        this.boardData[row][col].mine = false;
+                        this.boardData[safeRow][safeCol].mine = true;
+                        
+                        // Recalculate surrounding mines
+                        this.recalculateSurroundingMines();
+                    }
+                    
+                    this.firstTurn = false;
+                }
+                
+                // Reveal the tile
+                tile.revealed = true;
+                
+                // Check if it's a mine
+                if (tile.mine) {
+                    this.gameOver = true;
+                    this.revealAllMines();
+                    this.stopTimer();
+                    this.messageEl.textContent = 'GAME OVER - YOU LOSE!';
+                    this.messageEl.style.backgroundColor = '#ffcccc';
+                    return;
+                }
+                
+                // If it's a blank tile, reveal adjacent tiles
+                if (tile.surroundingMines === 0) {
+                    this.revealAdjacentTiles(row, col);
+                }
+                
+                // Check if the player has won
+                if (this.checkForWin()) {
+                    this.gameOver = true;
+                    this.stopTimer();
+                    this.showWinScreen();
+                }
+                
+                this.renderBoard();
+            }
+            
+            toggleFlag(row, col) {
+                const tile = this.boardData[row][col];
+                
+                // Do nothing if tile is already revealed
+                if (tile.revealed) return;
+                
+                // Toggle flag
+                tile.flagged = !tile.flagged;
+                
+                // Update the board
+                this.renderBoard();
+            }
+            
+            revealAdjacentTiles(row, col) {
+                for (let x = -1; x <= 1; x++) {
+                    for (let y = -1; y <= 1; y++) {
+                        const ni = row + x;
+                        const nj = col + y;
+                        
+                        if (ni >= 0 && ni < 10 && nj >= 0 && nj < 10 && 
+                            !this.boardData[ni][nj].revealed && 
+                            !this.boardData[ni][nj].mine) {
+                            
+                            this.boardData[ni][nj].revealed = true;
+                            this.boardData[ni][nj].flagged = false;
+                            
+                            if (this.boardData[ni][nj].surroundingMines === 0) {
+                                // Recursively reveal adjacent tiles for blank tiles
+                                this.revealAdjacentTiles(ni, nj);
+                            }
+                        }
+                    }
+                }
+            }
+            
+            recalculateSurroundingMines() {
+                for (let i = 0; i < 10; i++) {
+                    for (let j = 0; j < 10; j++) {
+                        if (this.boardData[i][j].mine) {
+                            this.boardData[i][j].surroundingMines = -1;
+                        } else {
+                            let count = 0;
+                            for (let x = -1; x <= 1; x++) {
+                                for (let y = -1; y <= 1; y++) {
+                                    const ni = i + x;
+                                    const nj = j + y;
+                                    if (ni >= 0 && ni < 10 && nj >= 0 && nj < 10 && this.boardData[ni][nj].mine) {
+                                        count++;
+                                    }
+                                }
+                            }
+                            this.boardData[i][j].surroundingMines = count;
+                        }
+                    }
+                }
+            }
+            
+            revealAllMines() {
+                for (let i = 0; i < 10; i++) {
+                    for (let j = 0; j < 10; j++) {
+                        if (this.boardData[i][j].mine) {
+                            this.boardData[i][j].revealed = true;
+                        }
+                    }
+                }
+                this.renderBoard();
+            }
+            
+            checkForWin() {
+                let revealedNonMines = 0;
+                for (let i = 0; i < 10; i++) {
+                    for (let j = 0; j < 10; j++) {
+                        if (this.boardData[i][j].revealed && !this.boardData[i][j].mine) {
+                            revealedNonMines++;
+                        }
+                    }
+                }
+                return revealedNonMines === (100 - this.mineDifficulty);
+            }
+            
+            showWinScreen() {
+                document.getElementById('game-screen').style.display = 'none';
+                document.getElementById('win-screen').style.display = 'block';
+                document.getElementById('win-time').textContent = `You won in ${this.elapsedTime.toFixed(1)} seconds!`;
+                document.getElementById('player-name').value = '';
+                document.getElementById('name-error').style.display = 'none';
+            }
+            
+            submitScore() {
+                const nameInput = document.getElementById('player-name');
+                const name = nameInput.value.toUpperCase();
+                
+                if (name.length !== 3) {
+                    document.getElementById('name-error').style.display = 'block';
+                    return;
+                }
+                
+                this.addPlayer(name, this.elapsedTime);
+                this.showMainMenu();
+            }
+            
+            // Leaderboard methods
+            initializeLeaderboard() {
+                if (!localStorage.getItem('minesweeper-leaderboard')) {
+                    localStorage.setItem('minesweeper-leaderboard', JSON.stringify([]));
+                }
+            }
+            
+            readLeaderboard() {
+                const leaderboardData = localStorage.getItem('minesweeper-leaderboard');
+                if (!leaderboardData) {
+                    return [];
+                }
+                return JSON.parse(leaderboardData);
+            }
+            
+            addPlayer(name, time) {
+                let leaderboard = this.readLeaderboard();
+                const player = new Minesweeper.Player(name, time);
+                
+                // Insert player in the correct position based on time
+                let inserted = false;
+                for (let i = 0; i < leaderboard.length; i++) {
+                    if (time < leaderboard[i].bestTime) {
+                        leaderboard.splice(i, 0, player);
+                        inserted = true;
+                        break;
+                    }
+                }
+                
+                // If player wasn't inserted, add to the end
+                if (!inserted) {
+                    leaderboard.push(player);
+                }
+                
+                // Save the updated leaderboard
+                localStorage.setItem('minesweeper-leaderboard', JSON.stringify(leaderboard));
+                return leaderboard;
+            }
+        }
+        
+        // Initialize the game when the page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            new Minesweeper();
+        });
+    </script>
+    <p style="text-align: center;"><a href="index.html">Back to the home page</a></p>
+</body>
+</html>
+
