@@ -8,6 +8,13 @@
         <title>David Denny</title>
         <link rel="icon" href="robotPicture.png" type="image/x-icon">
         <style> body {text-align: center;}</style>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+              if (window.innerWidth <= 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent)) {
+                window.location.href = "index_mobile.html";
+              }
+            });
+        </script>
     </head>
     <body>
 
