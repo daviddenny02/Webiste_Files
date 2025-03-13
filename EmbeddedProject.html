@@ -7,161 +7,224 @@
         <meta name="description" content="This is a portfolio website for David Denny">
         <title>David Denny</title>
         <link rel="icon" href="robotPicture.png" type="image/x-icon">
+        <link rel="stylesheet" href="styles.css">
         <style> body {text-align: center;}</style>
+        <script>
+          document.addEventListener("DOMContentLoaded", function () {
+            if (window.innerWidth <= 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent)) {
+              window.location.href = "EmbeddedProject_mobile.html";
+            }
+          });
+        </script>
     </head>
     <body>
         <h1>David Denny's Portfolio</h1>
         <a href="index.html"><h3>Back to the home page</h3></a>
         <hr/>
         <h2><u>Simple Surveillance Robot</u>:</h2>
-        <h3><u>Intoduction</u>:</h3>
-        This is the culmination of one of my embedded system projects, in which I created a<br>
-        Simple Surveillance Robot. This report will delve into the theory of operation for the robot,<br>
-        including some observations about the associated code and the project in general, including some<br>
-        content from the development stage of this product. Overall, this project has enabled the<br>
-        understanding of some of the fundamental processes that go into the production of embedded<br>
-        systems, including both hardware and software.<br><br>
+
+        <div class="container">
+            <div class="section-box" style="width: 850px;">
+              <div class="title-bar">
+                <span class="app-title"><font size="4">Introduction</font></span>
+                <span class="close-button">✖</span>
+              </div>
+              <p>
+                This is the culmination of one of my embedded system projects, in which I created a<br>
+                Simple Surveillance Robot. This report will delve into the theory of operation for the robot,<br>
+                including some observations about the associated code and the project in general, including some<br>
+                content from the development stage of this product. Overall, this project has enabled the<br>
+                understanding of some of the fundamental processes that go into the production of embedded<br>
+                systems, including both hardware and software.
+              </p>
+        </div>
+
         <img width="300" height="300" src="SurvRobotPic.JPEG" alt="A picture of the surveillance robot" />
-        <br><br>
-        <hr/>
-        <h3><u>Theory of Operation and Hardware</u>:</h3>
-            <i>This section of the report will be a broad overview of the operation of my robot, and a<br>
-            simple explanation of each of the system components used to create it:</i><br><br>
-            The microcontroller specifically used as a foundation for this project is Texas<br>
-            Instruments’ TM4C123GXL Red Board. This board serves as an optimal board to control this<br>
-            robot, with enough computational speed to control this robot, running with a 40MHz clock.<br><br>
-            My robot’s components, including the Red Board, are built upon a strong, circular,<br>
-            3D-printed base and wheels. These wheels enable the robot to traverse in a way not dissimilar to<br>
-            a Roomba. Each of the wheels are driven by their own motor, which is further driven by a<br>
-            DRV8833 Dual H-Bridge DRV. The inputs into the DRV, driven by Pulse Width Modules<br>
-            (PWMs) from the microcontroller, facilitate and control the voltage into the motors. With these<br>
-            tools, each wheel is able to spin independently, both forwards and backwards, to push the robot<br>
-            forward or backward. You can also spin the wheels in opposite directions to turn either clockwise<br>
-            or counterclockwise.<br><br>
-            This traversal is controlled by us via a Serial Interface (a UART0 module) connected to<br>
-            the robot, which allows us to send commands to the robot from a computer, with specific<br>
-            commands such as “forward” and “reverse.”<br><br>
-            There are also simple odometry capabilities through the use of two optical<br>
-            interrupters/phototransistors—one for each wheel. Holes on the wheels allow the passage of light<br>
-            from two pairs of lights and phototransistors. When spinning and traversing, these holes can be<br>
-            counted (via interrupts, by constantly breaking the lights connection) to give us an accurate<br>
-            estimate of the distance traveled by the robot, as there is a concrete distance between each hole.<br>
-            With this implemented, commands such as “forward 1000” can be sent to the robot, in which the<br>
-            robot will move forward 1 meter.<br><br>
 
-	        Voltage/power is acquired through a battery pack, providing 5V via 4xAA NiMH<br>
-            batteries, which directly powers the motors, microcontroller, and ultrasonic sensor(s), which will<br>
-            be discussed later. The powered microcontroller provides a source of 3.3V to other components<br>
-            as needed. The connections and control of power to each of these components are done through<br>
-            soldered wires on a green daughter board. A stripped, early version of this daughter board,<br>
-            including the relative solder connections, can be seen below:<br><br>
+        <div class="container">
+            <div class="section-box" style="width: 900px;">
+              <div class="title-bar">
+                <span class="app-title"><font size="4">Theory of Operation and Hardware</font></span>
+                <span class="close-button">✖</span>
+              </div>
+              <p>
+                <i>This section of the report will be a broad overview of the operation of my robot, and a<br>
+                simple explanation of each of the system components used to create it:</i><br><br>
+                The microcontroller specifically used as a foundation for this project is Texas<br>
+                Instruments’ TM4C123GXL Red Board. This board serves as an optimal board to control this<br>
+                robot, with enough computational speed to control this robot, running with a 40MHz clock.<br><br>
+                My robot’s components, including the Red Board, are built upon a strong, circular,<br>
+                3D-printed base and wheels. These wheels enable the robot to traverse in a way not dissimilar to<br>
+                a Roomba. Each of the wheels are driven by their own motor, which is further driven by a<br>
+                DRV8833 Dual H-Bridge DRV. The inputs into the DRV, driven by Pulse Width Modules<br>
+                (PWMs) from the microcontroller, facilitate and control the voltage into the motors. With these<br>
+                tools, each wheel is able to spin independently, both forwards and backwards, to push the robot<br>
+                forward or backward. You can also spin the wheels in opposite directions to turn either clockwise<br>
+                or counterclockwise.<br><br>
+                This traversal is controlled by us via a Serial Interface (a UART0 module) connected to<br>
+                the robot, which allows us to send commands to the robot from a computer, with specific<br>
+                commands such as “forward” and “reverse.”<br><br>
+                There are also simple odometry capabilities through the use of two optical<br>
+                interrupters/phototransistors—one for each wheel. Holes on the wheels allow the passage of light<br>
+                from two pairs of lights and phototransistors. When spinning and traversing, these holes can be<br>
+                counted (via interrupts, by constantly breaking the lights connection) to give us an accurate<br>
+                estimate of the distance traveled by the robot, as there is a concrete distance between each hole.<br>
+                With this implemented, commands such as “forward 1000” can be sent to the robot, in which the<br>
+                robot will move forward 1 meter.<br><br>
+    
+                Voltage/power is acquired through a battery pack, providing 5V via 4xAA NiMH<br>
+                batteries, which directly powers the motors, microcontroller, and ultrasonic sensor(s), which will<br>
+                be discussed later. The powered microcontroller provides a source of 3.3V to other components<br>
+                as needed. The connections and control of power to each of these components are done through<br>
+                soldered wires on a green daughter board. A stripped, early version of this daughter board,<br>
+                including the relative solder connections, can be seen below:
+              </p>
+        </div>
 
-            <img width="480" height="350" src="DaughterBoard.PNG" alt="A picture of the Daughter Board" /><br><br>
-            
-	        That covers the bulk of the essential operation of the robot, but there are also other<br> 
-            components that enable more features on the robot:<br><br>
+        <img width="480" height="350" src="DaughterBoard.PNG" alt="A picture of the Daughter Board" />
+        
+        <div class="container">
+            <div class="section-box" style="width: 800px;">
+              <div class="title-bar">
+                <span class="app-title"><font size="4">Theory of Operation and Hardware (cont.)</font></span>
+                <span class="close-button">✖</span>
+              </div>
+              <p>
+                That covers the bulk of the essential operation of the robot, but there are also other<br> 
+                components that enable more features on the robot:<br><br>
 
-            An IR Sensor is included, allowing for the capturing of data from a remote, which allows<br> 
-            us to send commands from the remote by decoding a remote’s NEC protocol. This<br>
-            enables simple wireless/remote control. Understanding the way the IR Sensor takes in<br>
-            data from a remote, certain button presses on the remote were assigned to perform<br>
-            various commands. For example, the forward arrow button on the remote would cause<br>
-            the robot to move forward, similar to manually entering the “forward” command in the<br>
-            Serial Interface.<br><br>
+                An IR Sensor is included, allowing for the capturing of data from a remote, which allows<br> 
+                us to send commands from the remote by decoding a remote’s NEC protocol. This<br>
+                enables simple wireless/remote control. Understanding the way the IR Sensor takes in<br>
+                data from a remote, certain button presses on the remote were assigned to perform<br>
+                various commands. For example, the forward arrow button on the remote would cause<br>
+                the robot to move forward, similar to manually entering the “forward” command in the<br>
+                Serial Interface.<br><br>
 
 
-            A PIR Sensor is included, which will passively show us if an intruder is detected by<br>
-            sensing a body’s naturally emitting infrared light. An LED on the controller will alert us<br>
-            to such motion detected.<br><br>
+                A PIR Sensor is included, which will passively show us if an intruder is detected by<br>
+                sensing a body’s naturally emitting infrared light. An LED on the controller will alert us<br>
+                to such motion detected.<br><br>
 
 
-            An Ultrasonic Sensor is included to calculate a distance from the robot to a wall (using<br>
-            the speed of sound), allowing the robot to move on its own without interruption or<br>
-            bumping into walls. This component, when paired with the PIR sensor, really allows us to<br>
-            make a true “surveillance robot.” For example, an additional mode of operation was<br>
-            designed in which the robot travels around a room without hitting a wall, and will<br>
-            periodically stop and check for movement using the PIR sensor.<br><br>
+                An Ultrasonic Sensor is included to calculate a distance from the robot to a wall (using<br>
+                the speed of sound), allowing the robot to move on its own without interruption or<br>
+                bumping into walls. This component, when paired with the PIR sensor, really allows us to<br>
+                make a true “surveillance robot.” For example, an additional mode of operation was<br>
+                designed in which the robot travels around a room without hitting a wall, and will<br>
+                periodically stop and check for movement using the PIR sensor.
+              </p>
+        </div>
 
-            <hr/><br>
+        <div class="container">
+            <div class="section-box" style="width: 850px;">
+              <div class="title-bar">
+                <span class="app-title"><font size="4">Code</font></span>
+                <span class="close-button">✖</span>
+              </div>
+              <p>
+                <i>This section of the report will delve into my implementation of the coding/software portion<br> 
+                of the project, and my methods to get each hardware component functioning. The raw, original .c and .h<br> 
+                files that enable the operation of the robot can be found in the download link listed below. Most<br> 
+                of these components are broken down into their respective .c files in my implementations.<br>
+                A list of relevant pin connections can also be found in the zipped folder.<br> 
+                Feel free to peer through these respective files as they are described below.</i><br>
+                <i>These files can also be found in my GitHub:</i><br>
 
-            <h3><u>Code</u>:</h3>
-            <i>This section of the report will delve into my implementation of the coding/software portion<br> 
-            of the project, and my methods to get each hardware component functioning. The raw, original .c and .h<br> 
-            files that enable the operation of the robot can be found in the download link listed below. Most<br> 
-            of these components are broken down into their respective .c files in my implementations.<br>
-            A list of relevant pin connections can also be found in the zipped folder.<br> 
-            Feel free to peer through these respective files as they are described below.</i><br>
-            <i>These files can also be found in my GitHub:</i><br>
+                <a href="David_Denny_Embedded_Project.zip" download><h3>David Denny Zipped Embedded Project Folder</h3></a>
 
-            <a href="David_Denny_Embedded_Project.zip" download><h3>David Denny Zipped Embedded Project Folder</h3></a><br>
+                <b><u>Serial Interface/UART0</u>:</b> The UART0 allows commands to be sent to the robot, and<br>
+                communicate with it. Characters and strings are taken from the user with the given UART files, and<br>
+                puts them into a buffer (a character array). We then parse the buffer, and separate those<br>
+                characters and strings into categories (alphas, numbers, and delimiters) to get solid commands<br>
+                from a user. These commands interact with the robot in various ways, including traversing an<br>
+                area with our robot. In the process of creating this project, Putty was used to send data to the<br>
+                microcontroller via the UART. The process of grabbing these commands from the user is shown in the<br>
+                flowchart below:
+              </p>
+        </div>
 
-            <b><u>Serial Interface/UART0</u>:</b> The UART0 allows commands to be sent to the robot, and<br>
-            communicate with it. Characters and strings are taken from the user with the given UART files, and<br>
-            puts them into a buffer (a character array). We then parse the buffer, and separate those<br>
-            characters and strings into categories (alphas, numbers, and delimiters) to get solid commands<br>
-            from a user. These commands interact with the robot in various ways, including traversing an<br>
-            area with our robot. In the process of creating this project, Putty was used to send data to the<br>
-            microcontroller via the UART. The process of grabbing these commands from the user is shown in the<br>
-            flowchart below:<br><br>
+        <img width="600" height="300" src="UARTdiagram.PNG" alt="A picture of the UART Diagram" />
 
-            <img width="600" height="300" src="UARTdiagram.PNG" alt="A picture of the UART Diagram" /><br><br>
+        <div class="container">
+            <div class="section-box" style="width: 850px;">
+              <div class="title-bar">
+                <span class="app-title"><font size="4">Code (cont.)</font></span>
+                <span class="close-button">✖</span>
+              </div>
+              <p>
+                <b><u>Motors</u>:</b> The motors’ operation is driven via a DRV. The inputs to the DRV take in<br>
+                compare values via the PWMs (initialized in <i>motor_pwm.c</i>), and control power to our motors.<br>
+                Commands like “forward” and “reverse” taken from the UART0 will set these compare values,<br>
+                and provide power to our motors accordingly. For my robot, the max compare value to send to<br>
+                the motors is 1023, which lets my robot achieve a max speed of around 10,000mm per minute.<br><br>
 
-            <b><u>Motors</u>:</b> The motors’ operation is driven via a DRV. The inputs to the DRV take in<br>
-            compare values via the PWMs (initialized in <i>motor_pwm.c</i>), and control power to our motors.<br>
-            Commands like “forward” and “reverse” taken from the UART0 will set these compare values,<br>
-            and provide power to our motors accordingly. For my robot, the max compare value to send to<br>
-            the motors is 1023, which lets my robot achieve a max speed of around 10,000mm per minute.<br><br>
+                One thing to note is my implementation of <i>setStop()</i>, which stops the robot. It is used<br>
+                many times throughout this project, and sets all motor compare values to 1023. Due to a<br>
+                quirk/failsafe of the DRV, setting the compare values this way essentially shorts the circuit,<br>
+                stopping the motors immediately, as opposed to letting momentum persist. This enables accurate<br>
+                angular movement, as the wheels slowing down on their own lead to haphazard measurements. A<br>
+                diagram of the DRV’s circuit can be seen below, exposing this quirk:
+              </p>
+        </div>
 
-            One thing to note is my implementation of <i>setStop()</i>, which stops the robot. It is used<br>
-            many times throughout this project, and sets all motor compare values to 1023. Due to a<br>
-            quirk/failsafe of the DRV, setting the compare values this way essentially shorts the circuit,<br>
-            stopping the motors immediately, as opposed to letting momentum persist. This enables accurate<br>
-            angular movement, as the wheels slowing down on their own lead to haphazard measurements. A<br>
-            diagram of the DRV’s circuit can be seen below, exposing this quirk:<br><br>
+        <img width="500" height="280" src="MotorsDiagram.PNG" alt="A picture of the Motors Diagram" />
 
-            <img width="500" height="280" src="MotorsDiagram.PNG" alt="A picture of the Motors Diagram" /><br><br>
+        <div class="container">
+            <div class="section-box" style="width: 900px;">
+              <div class="title-bar">
+                <span class="app-title"><font size="4">Code (cont.)</font></span>
+                <span class="close-button">✖</span>
+              </div>
+              <p>
+                <b><u>Odometry</u>:</b> As explained above, the odometry of my robot is facilitated with two pairs of<br>
+                a light and photoresistor interacting with the holes on our wheels. When light passes through a<br>
+                hole, an interrupt occurs (<i>leftTimerIsr()</i> and <i>rightTimerIsr()</i>), incrementing a counter for each<br>
+                individual wheel. These counters are separate for each wheel, and allow for an accurate<br>
+                measurement of how far the robot has moved. Keeping these counters separate also allows us to<br>
+                perform course correction in the event that one wheel motor is faster. If <i>leftCounter</i> is faster than<br>
+                <i>rightCounter</i>, then the compare values are adjusted accordingly. Timers (<i>TIMER1A</i> and <i>TIMER2A</i>) are<br>
+                also utilized to prevent fuzzy/inconsistent values obtained from during process.<br><br>
 
-            <b><u>Odometry</u>:</b> As explained above, the odometry of my robot is facilitated with two pairs of<br>
-            a light and photoresistor interacting with the holes on our wheels. When light passes through a<br>
-            hole, an interrupt occurs (<i>leftTimerIsr()</i> and <i>rightTimerIsr()</i>), incrementing a counter for each<br>
-            individual wheel. These counters are separate for each wheel, and allow for an accurate<br>
-            measurement of how far the robot has moved. Keeping these counters separate also allows us to<br>
-            perform course correction in the event that one wheel motor is faster. If <i>leftCounter</i> is faster than<br>
-            <i>rightCounter</i>, then the compare values are adjusted accordingly. Timers (<i>TIMER1A</i> and <i>TIMER2A</i>) are<br>
-            also utilized to prevent fuzzy/inconsistent values obtained from during process.<br><br>
+                <b><u>IR Sensor/Remote Control</u>:</b> The IR sensor on my robot is connected to one pin, <i>PC7</i>,<br>
+                and sends data to our board. I achieve this by having a GPIO interrupt on <i>PC7</i> that constantly<br>
+                uses a timer (<i>TIMER0A</i>) like a stopwatch, measuring the clocks/time between GPIO interrupts.<br>
+                Depending on the length of these interrupts, the robot can receive data from an IR signal (a<br>
+                remote). After ensuring the data sent is valid through its own routine, the respective command is<br>
+                executed with <i>runRemoteCommand()</i>. For example, the upwards-facing arrow on the used remote<br>
+                executed the "forward" command.<br><br>
 
-            <b><u>IR Sensor/Remote Control</u>:</b> The IR sensor on my robot is connected to one pin, <i>PC7</i>,<br>
-            and sends data to our board. I achieve this by having a GPIO interrupt on <i>PC7</i> that constantly<br>
-            uses a timer (<i>TIMER0A</i>) like a stopwatch, measuring the clocks/time between GPIO interrupts.<br>
-            Depending on the length of these interrupts, the robot can receive data from an IR signal (a<br>
-            remote). After ensuring the data sent is valid through its own routine, the respective command is<br>
-            executed with <i>runRemoteCommand()</i>. For example, the upwards-facing arrow on the used remote<br>
-            executed the "forward" command.<br><br>
+                <b><u>Ultrasonic Sensor</u>:</b> An ultrasonic sensor is used to calculate the distance from the robot<br>
+                to a wall using the following routine: A trigger signal is sent to the sensor by the Red Board,<br>
+                which begins an echo. A wide timer, <i>WTIMER3B</i>, is used to capture the length of this echo, in<br>
+                clocks elapsed, which can tell us how far from a wall the robot is. This process is similar to how<br>
+                the IR Sensor data is collected, and the formula for converting clocks to distance can be found in<br>
+                <i>findDistance()</i> in <i>ultrasonic_interrupts.c</i>.<br><br>
 
-            <b><u>Ultrasonic Sensor</u>:</b> An ultrasonic sensor is used to calculate the distance from the robot<br>
-            to a wall using the following routine: A trigger signal is sent to the sensor by the Red Board,<br>
-            which begins an echo. A wide timer, <i>WTIMER3B</i>, is used to capture the length of this echo, in<br>
-            clocks elapsed, which can tell us how far from a wall the robot is. This process is similar to how<br>
-            the IR Sensor data is collected, and the formula for converting clocks to distance can be found in<br>
-            <i>findDistance()</i> in <i>ultrasonic_interrupts.c</i>.<br><br>
+                <b><u>Passive IR</u>:</b> The Passive IR Sensor simply issues an interrupt that lights a red LED on<br>
+                Port F when motion/infrared light is detected. It runs in my rudimentary auto navigation system,<br>
+                <i>autoNavTimerIsr()</i>, when <i>alarmFlag</i> is set, and the <i>motionIsr()</i> interrupt occurs. Auto navigation<br>
+                itself works by utilizing a periodic timer, <i>TIMER3A</i>, pinging for distance and performing<br>
+                necessary functions when needed during the routine. This routine was briefly discussed above,<br>
+                and simply runs a periodic routine enabling auto navigation in which the robot traverses around<br>
+                and avoids running into walls, periodically checking for IR signals.
+              </p>
+        </div>
 
-            <b><u>Passive IR</u>:</b> The Passive IR Sensor simply issues an interrupt that lights a red LED on<br>
-            Port F when motion/infrared light is detected. It runs in my rudimentary auto navigation system,<br>
-            <i>autoNavTimerIsr()</i>, when <i>alarmFlag</i> is set, and the <i>motionIsr()</i> interrupt occurs. Auto navigation<br>
-            itself works by utilizing a periodic timer, <i>TIMER3A</i>, pinging for distance and performing<br>
-            necessary functions when needed during the routine. This routine was briefly discussed above,<br>
-            and simply runs a periodic routine enabling auto navigation in which the robot traverses around<br>
-            and avoids running into walls, periodically checking for IR signals.<br><br>
-
-            <hr/><br>
-
-            <b><u>Observations/Conclusion</u>:</b> This project has allowed me to learn the basic aspects of<br>
-            embedded systems and their production, including hardware and software. Understanding how to<br>
-            solder parts, utilize microcontroller peripherals, and calling simple interrupts are all foundational<br>
-            things to know as Computer Engineers. While limited in some regards, the product is truly<br>
-            something I am proud of. This project has proven itself vital to my understanding of the field in general.<br><br>
-
-        <hr/>
+        <div class="container">
+            <div class="section-box" style="width: 900px;">
+              <div class="title-bar">
+                <span class="app-title"><font size="4">Observations and Conclusion</font></span>
+                <span class="close-button">✖</span>
+              </div>
+              <p>
+                This project has allowed me to learn the basic aspects of<br>
+                embedded systems and their production, including hardware and software. Understanding how to<br>
+                solder parts, utilize microcontroller peripherals, and calling simple interrupts are all foundational<br>
+                things to know as Computer Engineers. While limited in some regards, the product is truly<br>
+                something I am proud of. This project has proven itself vital to my understanding of the field in general.
+              </p>
+        </div>
         <a href="index.html"><h3>Back to the home page</h3></a>
     </body>
 </html>
