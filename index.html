@@ -8,16 +8,14 @@
         <title>David Denny</title>
         <link rel="icon" href="robotPicture.png" type="image/x-icon">
         <link rel="stylesheet" href="styles.css">
-        <style> 
-          body { text-align: center; }
-          
-          /* Ensure section boxes take up 90% of the screen width dynamically */
-          .section-box {
-            width: 90%; /* 90% of the viewport width */
-            max-width: none; /* No artificial max width */
-            margin: 20px auto; /* Centers the box horizontally */
-          }
-        </style>
+        <style> body {text-align: center;}</style>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+              if (window.innerWidth <= 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent)) {
+                window.location.href = "index_mobile.html";
+              }
+            });
+        </script>
     </head>
     <body>
 
@@ -25,7 +23,7 @@
         <img width="100" height="100" src="robotPicture.png" alt="A picture of a distorted robot" />
 
         <div class="container">
-            <div class="section-box">
+            <div class="section-box" style="width: 700px;">
               <div class="title-bar">
                 <span class="app-title"><font size="4">Contact Information and Links</font></span>
                 <span class="close-button">✖</span>
@@ -48,7 +46,7 @@
         </div>
 
         <div class="container">
-            <div class="section-box">
+            <div class="section-box" style="width: 800px;">
               <div class="title-bar">
                 <span class="app-title"><font size="4">Skills</font></span>
                 <span class="close-button">✖</span>
@@ -61,7 +59,7 @@
         </div>
 
         <div class="container">
-            <div class="section-box">
+            <div class="section-box" style="width: 650px;">
               <div class="title-bar">
                 <span class="app-title"><font size="4">Projects</font></span>
                 <span class="close-button">✖</span>
@@ -79,7 +77,7 @@
         </div>
 
         <div class="container">
-            <div class="section-box">
+            <div class="section-box" style="width: 500px;">
               <div class="title-bar">
                 <span class="app-title"><font size="4">Live Demos</font></span>
                 <span class="close-button">✖</span>
