@@ -8,7 +8,16 @@
         <title>David Denny</title>
         <link rel="icon" href="robotPicture.png" type="image/x-icon">
         <link rel="stylesheet" href="styles.css">
-        <style> body {text-align: center;}</style>
+        <style> 
+          body { text-align: center; }
+          
+          /* Ensure section boxes take up 90% of the screen width dynamically */
+          .section-box {
+            width: 90%; /* 90% of the viewport width */
+            max-width: none; /* No artificial max width */
+            margin: 20px auto; /* Centers the box horizontally */
+          }
+        </style>
     </head>
     <body>
         <h1>David Denny's Portfolio</h1>
@@ -21,7 +30,7 @@
         <h1><u>Customized System Calls Project</u>:</h1>
 
         <div class="container">
-            <div class="section-box" style="width: 100% - 50px;">
+            <div class="section-box">
               <div class="title-bar">
                 <span class="app-title"><font size="4">Theory and Goals</font></span>
                 <span class="close-button">✖</span>
@@ -39,7 +48,7 @@
         <img width="350" height="110" src="SystemCallImage.JPG" alt="An example of the system call being used" />
 
         <div class="container">
-            <div class="section-box" style="width: 100% - 50px;">
+            <div class="section-box">
               <div class="title-bar">
                 <span class="app-title"><font size="4">Code</font></span>
                 <span class="close-button">✖</span>
@@ -73,7 +82,7 @@
         </div>
 
         <div class="container">
-            <div class="section-box" style="width: 100% - 50px;">
+            <div class="section-box">
               <div class="title-bar">
                 <span class="app-title"><font size="4">Code (cont.)</font></span>
                 <span class="close-button">✖</span>
@@ -97,7 +106,7 @@
         <h1><u>Custom UNIX Shell</u>:</h1>
 
         <div class="container">
-            <div class="section-box" style="width: 100% - 50px;">
+            <div class="section-box">
               <div class="title-bar">
                 <span class="app-title"><font size="4">Theory and Goals</font></span>
                 <span class="close-button">✖</span>
@@ -119,7 +128,7 @@
         <img width="500" height="200" src="ShellImage.JPG" alt="An example of the system call being used" />
 
         <div class="container">
-            <div class="section-box" style="width: 100% - 50px;">
+            <div class="section-box">
               <div class="title-bar">
                 <span class="app-title"><font size="4">Code</font></span>
                 <span class="close-button">✖</span>
