@@ -1,0 +1,73 @@
+/* Dark mode styling */
+body {
+    background-color: #222222;  /* Dark grey background */
+    color: white;  /* White text */
+    font-family: Arial, sans-serif; /* Optional: Improves readability */
+    margin: 0;
+    padding: 0;
+    font-family: "Consolas", monospace;
+  }
+  
+  /* Custom hyperlink colors */
+  a {
+    color: #FFA500;  /* Bright orange for normal links */
+    text-decoration: none; /* Removes underline (optional) */
+  }
+  
+  a:visited {
+    color: #CC7000;  /* Darker orange for visited links */
+  }
+  
+  a:hover {
+    color: #FFD700;  /* Golden yellow when hovered */
+    text-decoration: underline; /* Optional: adds underline on hover */
+  }
+  
+  a:active {
+    color: #FF4500;  /* Red-orange when clicked */
+  }
+  
+  .section-box {
+    border: 2px solid white; /* White border */
+    padding: 10px; /* Spacing inside the box */
+    margin: 20px 0; /* Space between sections */
+    border-radius: 5px; /* Slightly rounded corners */
+    background-color: #444; /* Slightly lighter grey background */
+    position: relative;
+    width: 350px; /* Adjust as needed */
+  }
+  
+  /* Title bar styling */
+  .title-bar {
+    background-color: #0f0f0f; /* Darker grey title bar */
+    color: white;
+    font-weight: bold;
+    padding: 5px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    margin: -10px -10px 10px -10px; /* Aligns with the border */
+  }
+  
+  /* X (close button) styling */
+  .close-button {
+    color: white;
+    font-size: 16px;
+    cursor: default; /* No functionality, just for appearance */
+    user-select: none; /* Prevents text selection */
+    padding: 2px 5px;
+  }
+  
+  .close-button:hover {
+    color: #FFA500; /* Changes to red when hovered */
+  }
+
+  /* Centering container */
+  .container {
+    display: flex;
+    flex-direction: column; /* Stacks the boxes vertically */
+    align-items: center; /* Centers horizontally */
+    width: 100%; /* Ensures container takes up full width of the screen */
+  }
