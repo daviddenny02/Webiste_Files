@@ -1,14 +1,28 @@
-<!-- A detailed overview of my RISC V Processor Project -->
-
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
         <meta name="description" content="This is a portfolio website for David Denny">
         <title>David Denny</title>
-        <link rel="icon" href="robotPicture.png" type="image/x-icon">
+        <link rel="icon" href="robotPicture2.png" type="image/x-icon">
         <link rel="stylesheet" href="styles.css">
-        <style> body {text-align: center;}</style>
+        <style> 
+          body { text-align: center; }
+          
+          /* Ensure section boxes take up 90% of the screen width dynamically */
+          .section-box {
+            width: 90%; /* 90% of the viewport width */
+            max-width: none; /* No artificial max width */
+            margin: 20px auto; /* Centers the box horizontally */
+          }
+        </style>
+        <script>
+          document.addEventListener("DOMContentLoaded", function () {
+            if (window.innerWidth <= 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent)) {
+              window.location.href = "RISCProject_mobile.html";
+            }
+          });
+        </script>
     </head>
     <body>
         <h1>David Denny's Portfolio</h1>
@@ -17,18 +31,19 @@
         <h3><u>RISC V Processor from Scratch</u>:</h3>
 
         <div class="container">
-            <div class="section-box" style="width: 100% - 50px;">
+            <div class="section-box">
               <div class="title-bar">
-                <span class="app-title"><font size="4">Intoduction and Theory</font></span>
+                <span class="app-title"><font size="4">Introduction and Theory (TEST 4)</font></span>
                 <span class="close-button">✖</span>
               </div>
               <p>
                 <i>***This page is currently under construction.***</i><br><br>
-                This project has the goal of creating a RISC V Architeture Processor<br>
+                This project has the goal of creating a RISC V Architecture Processor<br>
                 using a Xilinx FPGA and the SystemVerilog programming language.<br>
                 The processor will use a five-stage pipeline, and account for hazards.<br>
                 This project is currently being created!
               </p>
+            </div>
         </div>
 
         <a href="index.html"><h3>Back to the home page</h3></a>
