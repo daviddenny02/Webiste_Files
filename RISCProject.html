@@ -7,19 +7,37 @@
         <meta name="description" content="This is a portfolio website for David Denny">
         <title>David Denny</title>
         <link rel="icon" href="robotPicture.png" type="image/x-icon">
+        <link rel="stylesheet" href="styles.css">
         <style> body {text-align: center;}</style>
+        <script>
+          document.addEventListener("DOMContentLoaded", function () {
+            if (window.innerWidth <= 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent)) {
+              window.location.href = "RISCProject_mobile.html";
+            }
+          });
+        </script>
     </head>
     <body>
         <h1>David Denny's Portfolio</h1>
         <a href="index.html"><h3>Back to the home page</h3></a>
         <hr/>
         <h3><u>RISC V Processor from Scratch</u>:</h3>
-        <i>***This page is currently under construction.***</i><br><br>
-        This project has the goal of creating a RISC V Architeture Processor<br>
-        using a Xilinx FPGA and the SystemVerilog programming language.<br>
-        The processor will use a five-stage pipeline, and account for hazards.<br>
-        This project is currently being created!<br><br>
-        <hr/>
+
+        <div class="container">
+            <div class="section-box" style="width: 650px;">
+              <div class="title-bar">
+                <span class="app-title"><font size="4">Intoduction and Theory</font></span>
+                <span class="close-button">✖</span>
+              </div>
+              <p>
+                <i>***This page is currently under construction.***</i><br><br>
+                This project has the goal of creating a RISC V Architeture Processor<br>
+                using a Xilinx FPGA and the SystemVerilog programming language.<br>
+                The processor will use a five-stage pipeline, and account for hazards.<br>
+                This project is currently being created!
+              </p>
+        </div>
+
         <a href="index.html"><h3>Back to the home page</h3></a>
     </body>
 </html>
