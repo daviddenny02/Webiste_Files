@@ -50,10 +50,10 @@
               </div>
               <p>
                 <i>This section of the report will be a broad overview of the operation of my robot, and a
-                simple explanation of each of the system components used to create it:</i><br>
+                simple explanation of each of the system components used to create it:</i><br><br>
                 The microcontroller specifically used as a foundation for this project is Texas
                 Instruments’ TM4C123GXL Red Board. This board serves as an optimal board to control this
-                robot, with enough computational speed to control this robot, running with a 40MHz clock.<br>
+                robot, with enough computational speed to control this robot, running with a 40MHz clock.<br><br>
                 My robot’s components, including the Red Board, are built upon a strong, circular,
                 3D-printed base and wheels. These wheels enable the robot to traverse in a way not dissimilar to
                 a Roomba. Each of the wheels are driven by their own motor, which is further driven by a
@@ -61,17 +61,17 @@
                 (PWMs) from the microcontroller, facilitate and control the voltage into the motors. With these
                 tools, each wheel is able to spin independently, both forwards and backwards, to push the robot
                 forward or backward. You can also spin the wheels in opposite directions to turn either clockwise
-                or counterclockwise.<br>
+                or counterclockwise.<br><br>
                 This traversal is controlled by us via a Serial Interface (a UART0 module) connected to
                 the robot, which allows us to send commands to the robot from a computer, with specific
-                commands such as “forward” and “reverse.”<br>
+                commands such as “forward” and “reverse.”<br><br>
                 There are also simple odometry capabilities through the use of two optical
                 interrupters/phototransistors—one for each wheel. Holes on the wheels allow the passage of light
                 from two pairs of lights and phototransistors. When spinning and traversing, these holes can be
                 counted (via interrupts, by constantly breaking the lights connection) to give us an accurate
                 estimate of the distance traveled by the robot, as there is a concrete distance between each hole.
                 With this implemented, commands such as “forward 1000” can be sent to the robot, in which the
-                robot will move forward 1 meter.<br>
+                robot will move forward 1 meter.<br><br>
     
                 Voltage/power is acquired through a battery pack, providing 5V via 4xAA NiMH
                 batteries, which directly powers the motors, microcontroller, and ultrasonic sensor(s), which will
@@ -92,7 +92,7 @@
               </div>
               <p>
                 That covers the bulk of the essential operation of the robot, but there are also other
-                components that enable more features on the robot:<br>
+                components that enable more features on the robot:<br><br>
 
                 An IR Sensor is included, allowing for the capturing of data from a remote, which allows
                 us to send commands from the remote by decoding a remote’s NEC protocol. This
@@ -100,12 +100,12 @@
                 data from a remote, certain button presses on the remote were assigned to perform
                 various commands. For example, the forward arrow button on the remote would cause
                 the robot to move forward, similar to manually entering the “forward” command in the
-                Serial Interface.<br>
+                Serial Interface.<br><br>
 
 
                 A PIR Sensor is included, which will passively show us if an intruder is detected by
                 sensing a body’s naturally emitting infrared light. An LED on the controller will alert us
-                to such motion detected.<br>
+                to such motion detected.<br><br>
 
 
                 An Ultrasonic Sensor is included to calculate a distance from the robot to a wall (using
@@ -158,7 +158,7 @@
                 compare values via the PWMs (initialized in <i>motor_pwm.c</i>), and control power to our motors.
                 Commands like “forward” and “reverse” taken from the UART0 will set these compare values,
                 and provide power to our motors accordingly. For my robot, the max compare value to send to
-                the motors is 1023, which lets my robot achieve a max speed of around 10,000mm per minute.<br>
+                the motors is 1023, which lets my robot achieve a max speed of around 10,000mm per minute.<br><br>
 
                 One thing to note is my implementation of <i>setStop()</i>, which stops the robot. It is used
                 many times throughout this project, and sets all motor compare values to 1023. Due to a
@@ -185,7 +185,7 @@
                 measurement of how far the robot has moved. Keeping these counters separate also allows us to
                 perform course correction in the event that one wheel motor is faster. If <i>leftCounter</i> is faster than
                 <i>rightCounter</i>, then the compare values are adjusted accordingly. Timers (<i>TIMER1A</i> and <i>TIMER2A</i>) are
-                also utilized to prevent fuzzy/inconsistent values obtained from during process.<br>
+                also utilized to prevent fuzzy/inconsistent values obtained from during process.<br><br>
 
                 <b><u>IR Sensor/Remote Control</u>:</b> The IR sensor on my robot is connected to one pin, <i>PC7</i>,
                 and sends data to our board. I achieve this by having a GPIO interrupt on <i>PC7</i> that constantly
@@ -193,14 +193,14 @@
                 Depending on the length of these interrupts, the robot can receive data from an IR signal (a
                 remote). After ensuring the data sent is valid through its own routine, the respective command is
                 executed with <i>runRemoteCommand()</i>. For example, the upwards-facing arrow on the used remote
-                executed the "forward" command.<br>
+                executed the "forward" command.<br><br>
 
                 <b><u>Ultrasonic Sensor</u>:</b> An ultrasonic sensor is used to calculate the distance from the robot
                 to a wall using the following routine: A trigger signal is sent to the sensor by the Red Board,
                 which begins an echo. A wide timer, <i>WTIMER3B</i>, is used to capture the length of this echo, in
                 clocks elapsed, which can tell us how far from a wall the robot is. This process is similar to how
                 the IR Sensor data is collected, and the formula for converting clocks to distance can be found in
-                <i>findDistance()</i> in <i>ultrasonic_interrupts.c</i>.<br>
+                <i>findDistance()</i> in <i>ultrasonic_interrupts.c</i>.<br><br>
 
                 <b><u>Passive IR</u>:</b> The Passive IR Sensor simply issues an interrupt that lights a red LED on
                 Port F when motion/infrared light is detected. It runs in my rudimentary auto navigation system,
