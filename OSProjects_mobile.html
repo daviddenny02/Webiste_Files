@@ -36,11 +36,11 @@
                 <span class="close-button">✖</span>
               </div>
               <p>
-                This project involved the creation of custom system calls within a simplified operating system. <br>
-                The xv6 Operating System has the benefit of being both simplified and open-source. This means <br>
-                that the system is well-documented and useful for better understanding the structure and <br>
-                functionality of operating systems in general. This project has the goal of implementing <br>
-                customized system calls at the kernel level of an operating system, which adds additional <br>
+                This project involved the creation of custom system calls within a simplified operating system.
+                The xv6 Operating System has the benefit of being both simplified and open-source. This means
+                that the system is well-documented and useful for better understanding the structure and
+                functionality of operating systems in general. This project has the goal of implementing
+                customized system calls at the kernel level of an operating system, which adds additional
                 functions or system calls for a user to use at the user level.
               </p>
         </div>
@@ -54,28 +54,28 @@
                 <span class="close-button">✖</span>
               </div>
               <p>
-                The system calls added in this project include the following functions. Note that to implement <br>
-                these system calls, multiple attributes of processes in the xv6 Operating System were added. <br>
+                The system calls added in this project include the following functions. Note that to implement
+                these system calls, multiple attributes of processes in the xv6 Operating System were added.
                 Notably, this includes a color attribute and tickets attribute:<br><br>
 
-                <i><b>int setColor(enum COLOR)</b></i> –- This system call assigns a color to a process when passed a <br>
+                <i><b>int setColor(enum COLOR)</b></i> –- This system call assigns a color to a process when passed a
                 valid enum color.<br>
-                <i><b>int setTickets(int)</b></i> –- This system call assigns a number of tickets to a process, which can be <br>
-                utilized in a lottery scheduler. Child processes inherit their parent’s number of tickets, <br>
+                <i><b>int setTickets(int)</b></i> –- This system call assigns a number of tickets to a process, which can be
+                utilized in a lottery scheduler. Child processes inherit their parent’s number of tickets,
                 if a child process were created.<br>
-                <i><b>int getpinfo(struct pstat *)</b></i> –- This system call returns information pertaining to a process’ <br>
+                <i><b>int getpinfo(struct pstat *)</b></i> –- This system call returns information pertaining to a process’
                 attributes. This system call allows us to ensure that ticket values and colors were correctly assigned.<br><br>
 
-                A user-space test program was also created to call each of these system calls from the user space <br>
-                and verify their operation. As mentioned, the xv6 Operating System is altered to add these <br>
-                additional system calls, and requires changing many of the files throughout the system’s entire <br>
-                directory. This includes declaring and instantiating many values within the kernel space of the <br>
+                A user-space test program was also created to call each of these system calls from the user space
+                and verify their operation. As mentioned, the xv6 Operating System is altered to add these
+                additional system calls, and requires changing many of the files throughout the system’s entire
+                directory. This includes declaring and instantiating many values within the kernel space of the
                 operating system.<br><br>
 
-                A full list of the changed files can be found below. For brevity’s sake, the files that implement and test <br>
-                the added system calls are the only files included in the below download link. Further explanations of the <br>
-                flies' relevance to the project can be found in the zipped folder’s README. This code can be found on my <br>
-                GitHub page if desired.<br>
+                A full list of the changed files can be found below. For brevity’s sake, the files that implement and test
+                the added system calls are the only files included in the below download link. Further explanations of the
+                flies' relevance to the project can be found in the zipped folder’s README. This code can be found on my
+                GitHub page if desired.
 
                 <a href="David_Denny_System_Call_Project.zip" download><h3>David Denny Zipped System Call Project Folder</h3></a>
               </p>
@@ -112,15 +112,15 @@
                 <span class="close-button">✖</span>
               </div>
               <p>
-                This project involved the creation of my own, simple Unix shell. The shell is a fundamental <br>
-                component of interfacing with the Unix environment, and this project has the goal of understanding <br>
-                how modern shells function. This project allowed me to familiarize myself with the Linux programming <br>
-                environment and understand the creation, destruction, and management of processes in operating <br>
+                This project involved the creation of my own, simple Unix shell. The shell is a fundamental
+                component of interfacing with the Unix environment, and this project has the goal of understanding
+                how modern shells function. This project allowed me to familiarize myself with the Linux programming
+                environment and understand the creation, destruction, and management of processes in operating
                 systems. All of these concepts enabled me to understand and create a fully functionally Unix shell.<br><br>
 
-                Specifically, my shell, otherwise known as a Command line Interpreter, implements the standard Unix <br>
-                commands you would expect out of a command line interface. This includes running test files, navigating <br>
-                directories, and exiting when desired using fork(), execv(), and more. This project is foundational to <br>
+                Specifically, my shell, otherwise known as a Command line Interpreter, implements the standard Unix
+                commands you would expect out of a command line interface. This includes running test files, navigating
+                directories, and exiting when desired using fork(), execv(), and more. This project is foundational to
                 my understanding of Operating Systems.
               </p>
         </div>
@@ -134,7 +134,7 @@
                 <span class="close-button">✖</span>
               </div>
               <p>
-                All code for my custom shell is consolidated into one file in the download link below.<br>
+                All code for my custom shell is consolidated into one file in the download link below.
                 A copy of this code can also be found at my GitHub page:
                 <a href="David_Denny_Shell_Project.zip" download><h3>David Denny Shell Project Code</h3></a>
               </p>
