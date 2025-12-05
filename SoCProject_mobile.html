@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="description" content="This is a portfolio website for David Denny">
+        <title>David Denny</title>
+        <link rel="icon" href="robotPicture2.png" type="image/x-icon">
+        <link rel="stylesheet" href="styles.css">
+        <style> 
+          body { text-align: center; }
+          
+          /* Ensure section boxes take up 90% of the screen width dynamically */
+          .section-box {
+            width: 90%; /* 90% of the viewport width */
+            max-width: none; /* No artificial max width */
+            margin: 20px auto; /* Centers the box horizontally */
+          }
+        </style>
+    </head>
+    <body>
+        <h1>David Denny's Portfolio</h1>
+        <a href="index.html"><h3>Back to the home page</h3></a>
+        <hr/>
+
+        <h3><u>System on Chip I<sup>2</sup>C Peripheral from Scratch</u>:</h3>
+
+        <div class="container">
+            <div class="section-box">
+              <div class="title-bar">
+                <span class="app-title"><font size="4">Intoduction</font></span>
+                <span class="close-button">✖</span>
+              </div>
+              <p>
+                This project implements a custom I<sup>2</sup>C master peripheral on a Blackboard FPGA and
+                exposes the peripheral to the hard-processor subsystem via an AXI4-Lite memory-mapped interface.
+                A companion Linux kernel module exposes control and status through a sysfs interface, enabling
+                user-space and kernel-space interactions with the IP. The hardware uses an FSM-driven master,
+                independent TX/RX FIFOs, and a 200 kHz clock-enable timing reference routed to a PMOD connector.
+                The design was exercised with C test programs and kernel-module driven tests to verify the
+                peripheral logic and software integration.
+              </p>
+        </div>
+        
+        <div class="container">
+            <div class="section-box">
+              <div class="title-bar">
+                <span class="app-title"><font size="4">Code</font></span>
+                <span class="close-button">✖</span>
+              </div>
+              <p>
+                The submission includes RTL for the I<sup>2</sup>C IP, the AXI4-Lite glue, user-space test programs,
+                and the Linux kernel module source that exposes /sys/kernel/i2c/ and /sys/kernel/i2c_expander/.
+                All files are provided in the downloadable archive below and are available on my GitHub:<br>
+
+                <a href="David_Denny_SoC_Project.zip" download><h3>David Denny SoC Project Code</h3></a>
+              </p>
+        </div>
+
+        <div class="container">
+          <div class="section-box">
+            <div class="title-bar">
+              <span class="app-title"><font size="4">Theory</font></span>
+              <span class="close-button">✖</span>
+            </div>
+            <p>
+              The hardware implements a master-only I<sup>2</sup>C FSM capable of communicating with multiple
+              7-bit devices at the specified timing. The module maps five 32-bit registers over an AXI4-Lite bus
+              to control operation: control, status, address, register, byte count, and data FIFO access. A test-out
+              signal provides the 200 kHz clock-enable for external observation via a PMOD pin, and the physical
+              SDA/SCL are also routed to the PMOD for peripheral connection and oscilloscope probing. Below is a
+              description of the register mapping, with an initial memory offset of 0x43C20000:
+            </p>
+          </div>
+
+        <h2>I2C Register Map:</h2>
+
+        <table border="1" cellpadding="6" cellspacing="0" style="border-collapse: collapse; width: 100%;">
+          <tr style="background-color: #000000; font-weight: bold;">
+            <th>Register</th>
+            <th>Offset</th>
+            <th>Access</th>
+            <th>Bits</th>
+            <th>Field</th>
+            <th>Description</th>
+          </tr>
+
+          <!-- ADDRESS -->
+          <tr>
+            <td rowspan="1">ADDRESS</td>
+            <td rowspan="1">0x00</td>
+            <td rowspan="1">R/W</td>
+            <td>6:0</td>
+            <td>ADDRESS</td>
+            <td>7-bit I2C device address</td>
+          </tr>
+
+          <!-- REGISTER -->
+          <tr>
+            <td rowspan="1">REGISTER</td>
+            <td rowspan="1">0x04</td>
+            <td rowspan="1">R/W</td>
+            <td>7:0</td>
+            <td>REGISTER</td>
+            <td>8-bit internal register index</td>
+          </tr>
+
+          <!-- DATA -->
+          <tr>
+            <td rowspan="1">DATA</td>
+            <td rowspan="1">0x08</td>
+            <td rowspan="1">R/W</td>
+            <td>7:0</td>
+            <td>DATA</td>
+            <td>Write: pushes data to TX FIFO<br>Read: pops data from RX FIFO</td>
+          </tr>
+
+          <!-- STATUS -->
+          <tr>
+            <td rowspan="10">STATUS</td>
+            <td rowspan="10">0x0C</td>
+            <td rowspan="10">R/W1C</td>
+
+            <td>0</td>
+            <td>RXFO</td>
+            <td>RX FIFO overflow (write 1 to clear)</td>
+          </tr>
+
+          <tr>
+            <td>1</td>
+            <td>RXFF</td>
+            <td>RX FIFO full</td>
+          </tr>
+
+          <tr>
+            <td>2</td>
+            <td>RXFE</td>
+            <td>RX FIFO empty</td>
+          </tr>
+
+          <tr>
+            <td>3</td>
+            <td>TXFO</td>
+            <td>TX FIFO overflow (write 1 to clear)</td>
+          </tr>
+
+          <tr>
+            <td>4</td>
+            <td>TXFF</td>
+            <td>TX FIFO full</td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td>TXFE</td>
+            <td>TX FIFO empty</td>
+          </tr>
+
+          <tr>
+            <td>6</td>
+            <td>ACK_ERROR</td>
+            <td>ACK failure occurred (write 1 to clear)</td>
+          </tr>
+
+          <tr>
+            <td>7</td>
+            <td>BUSY</td>
+            <td>Module is actively transmitting or receiving</td>
+          </tr>
+
+          <tr>
+            <td>31:8</td>
+            <td>DEBUG_IN</td>
+            <td>Debug inputs (FSM probe / test signals)</td>
+          </tr>
+
+          <!-- CONTROL -->
+          <tr></tr>
+          <tr>
+            <td rowspan="8">CONTROL</td>
+            <td rowspan="8">0x10</td>
+            <td rowspan="8">R/W</td>
+
+            <td>0</td>
+            <td>R/~W</td>
+            <td>Direction: 1 = Read, 0 = Write</td>
+          </tr>
+
+          <tr>
+            <td>4:1</td>
+            <td>BYTE_COUNT</td>
+            <td>Number of bytes to transfer</td>
+          </tr>
+
+          <tr>
+            <td>5</td>
+            <td>USE_REGISTER</td>
+            <td>Send REGISTER byte after address</td>
+          </tr>
+
+          <tr>
+            <td>6</td>
+            <td>USE_REPEATED_START</td>
+            <td>1 = Use repeated start; 0 = Stop then start</td>
+          </tr>
+
+          <tr>
+            <td>7</td>
+            <td>START</td>
+            <td>Set to 1 to begin an I2C transaction</td>
+          </tr>
+
+          <tr>
+            <td>8</td>
+            <td>TEST_OUT</td>
+            <td>Enable test output signals</td>
+          </tr>
+
+          <tr>
+            <td>23:9</td>
+            <td>RESERVED</td>
+            <td>Reserved</td>
+          </tr>
+
+          <tr>
+            <td>31:24</td>
+            <td>DEBUG_OUT</td>
+            <td>Debug outputs (can drive LEDs or GPO)</td>
+          </tr>
+
+        </table>
+
+        <div class="container">
+          <div class="section-box">
+            <div class="title-bar">
+              <span class="app-title"><font size="4">Theory (cont.)</font></span>
+              <span class="close-button">✖</span>
+            </div>
+            <p>
+              <b>Clock Divider / Timing:</b> A 200 kHz clock-enable drives bit transitions and allows SDA and SCL
+              changes on separated edges. This 200kHz signal enables I<sup>2</sup>C communication at 100kHz.<br><br>
+
+              <b>TX / RX FIFOs:</b> The TX and RX FIFOs are 8-bit wide and 16 deep, and used to facilitate
+              writes (TX) and reads (RX) from the Linux Kernel. Status bits indicate full/empty and overflow
+              conditions (TXFF/TXFE/TXFO, RXFF/RXFE/RXFO). Writes to the DATA register enqueue TX bytes, and
+              reads dequeue RX bytes. FIFO reset and status-clear semantics are supported.<br><br>
+
+              <b>Byte Transfer Semantics:</b> The FSM follows I<sup>2</sup>C conventions: START, address + R/W,
+              optional register byte (<i>use_register</i>), data bytes from TX_FIFO, ACK checking (<i>ack_error</i>), and
+              STOP. For reads, the FSM issues repeated starts as required and places received bytes into
+              the RX_FIFO for host reads.
+            </p>
+        </div>
+
+        <div class="container">
+          <div class="section-box">
+            <div class="title-bar">
+              <span class="app-title"><font size="4">Tests</font></span>
+              <span class="close-button">✖</span>
+            </div>
+            <p>
+              A set of user-space C programs exercise typical transactions (<i>complex_write, simple_write,</i>
+              <i>complex_read, simple_read, ack_error</i>) by writing the appropriate registers over /dev/mem. These
+              programs demonstrate the peripheral's control flow, and kernel-module wrappers provide the same
+              functionality through sysfs entries (e.g. /sys/kernel/i2c/start, /sys/kernel/i2c/tx_data, etc.).
+              ILA captures consistently show correct SDA/SCL toggling, FSM state transitions, Busy, and Error
+              signaling. Below are the resulting ILA waveforms from those tests of the I<sup>2</sup>C peripheral:
+            </p>
+        </div>
+
+        <h2>Complex Write:</h2>
+        <img width="700" height="300" src="complexWrite.png" alt="ILA Test Output" /><br>
+        <img width="350" height="150" src="complexWriteConsole.png" alt="Linux Kernel Test Output" /><br>
+        <h2>Simple Write:</h2>
+        <img width="700" height="300" src="simpleWriteILA.png" alt="ILA Test Output" /><br>
+        <img width="350" height="150" src="simpleWriteConsole.png" alt="Linux Kernel Test Output" /><br>
+        <h2>Complex Read:</h2>
+        <img width="700" height="300" src="complexRead.png" alt="ILA Test Output" /><br>
+        <img width="350" height="150" src="complexReadConsole.png" alt="Linux Kernel Test Output" /><br>
+        <h2>Simple Read:</h2>
+        <img width="700" height="300" src="simpleRead.png" alt="ILA Test Output" /><br>
+        <img width="350" height="150" src="simpleReadConsole.png" alt="Linux Kernel Test Output" /><br>
+        <h2>Ack Error:</h2>
+        <img width="700" height="300" src="ackError.png" alt="ILA Test Output" /><br>
+        <img width="350" height="150" src="ackErrorConsole.png" alt="Linux Kernel Test Output" /><br>
+        
+        <div class="container">
+          <div class="section-box">
+            <div class="title-bar">
+              <span class="app-title"><font size="4">Conclusion</font></span>
+              <span class="close-button">✖</span>
+            </div>
+            <p>
+            The project delivered a fully instrumented I<sup>2</sup>C master IP integrated with an AXI4-Lite control<br>
+            interface and a Linux kernel module exposing sysfs controls. RTL behavior for the FSM and FIFO logic<br>
+            was validated with ILA captures and software tests, and the kernel module correctly triggers<br>
+            peripheral actions via sysfs. Overall, the project strengthened my skills in FPGA IP design,<br>
+            AXI interfacing, embedded software, Linux kernel modules, and SoC-level debugging.
+          </p>
+        </div>
+
+        <a href="index.html"><h3>Back to the home page</h3></a>
+    </body>
+</html>

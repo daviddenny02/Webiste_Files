@@ -1,0 +1,146 @@
+<!-- A detailed overview of my RTOS Project -->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="description" content="This is a portfolio website for David Denny">
+        <title>David Denny</title>
+        <link rel="icon" href="robotPicture2.png" type="image/x-icon">
+        <link rel="stylesheet" href="styles.css">
+        <style> body {text-align: center;}</style>
+        <script>
+          document.addEventListener("DOMContentLoaded", function () {
+            if (window.innerWidth <= 768 || /Mobi|Android|iPhone/i.test(navigator.userAgent)) {
+              window.location.href = "RISCProject_mobile.html";
+            }
+          });
+        </script>
+    </head>
+    <body>
+        <h1>David Denny's Portfolio</h1>
+        <a href="index.html"><h3>Back to the home page</h3></a>
+        <hr/>
+
+        <h3><u>Real-Time Operating System from Scratch</u>:</h3>
+
+        <div class="container">
+            <div class="section-box" style="width: 850px;">
+              <div class="title-bar">
+                <span class="app-title"><font size="4">Intoduction</font></span>
+                <span class="close-button">✖</span>
+              </div>
+              <p>
+                This project implements a feature-complete, simple Real-Time Operating System. This RTOS<br>
+                is created from scratch and driven using a Texas Instruments’ TM4C123GXL Red Board and its<br>
+                accompanying microcontroller. Through the use of an UART connection, users can interact with<br>
+                the RTOS, which runs multiple sample tasks and threads at the same time, performing quick,<br>
+                efficient context switches and requisite memory protection of the Kernel and User Space.
+              </p>
+        </div>
+        
+        <div class="container">
+            <div class="section-box" style="width: 500px;">
+              <div class="title-bar">
+                <span class="app-title"><font size="4">Code</font></span>
+                <span class="close-button">✖</span>
+              </div>
+              <p>
+                The attached files and code below contian the entirety<br>
+                of the C code and Headers that implement the RTOS.<br>
+                These files can also be found on my GitHub:<br>
+
+                <a href="David_Denny_RTOS_Project.zip" download><h3>David Denny RTOS Project Code</h3></a>
+              </p>
+        </div>
+
+        <img width="700" height="300" src="RTOS1.png" alt="Example Shell output from the RTOS" /><br>
+
+        <div class="container">
+          <div class="section-box" style="width: 1050px;">
+            <div class="title-bar">
+              <span class="app-title"><font size="4">Theory</font></span>
+              <span class="close-button">✖</span>
+            </div>
+            <p>
+              This page will document the features implemented and available in the RTOS, including the Embedded Systems<br>
+              concepts that were applied and tested with it. As previously descibed, the RTOS is run with a TI microprocessor,<br>
+              and uses some external hardware in the form of LEDs and Push Buttons for testing and I/O integration experience.<br>
+              Also previously described, the primary form of communication between a user and the RTOS is via a UART<br>
+              connection, and the various screenshots provided are from the shell implemented with it. With that context in<br>
+              mind, here are the features available in the RTOS:
+            </p>
+          </div>
+
+          <img width="800" height="300" src="RTOS2.png" alt="Example Shell output from the RTOS" /><br>
+
+        <div class="container">
+          <div class="section-box" style="width: 1050px;">
+            <div class="title-bar">
+              <span class="app-title"><font size="4">Theory (cont.)</font></span>
+              <span class="close-button">✖</span>
+            </div>
+            <p>
+              <b>Shell Interface:</b> Using the UART connection, a shell is implemented, capturing user inputs and interpreting<br>
+              those inputs as RTOS commands. These commands include the ability to run/kill tasks, check the status of the RTOS<br>
+              with common Linux commands like ps() and ipcs(), reboot the RTOS, etc. The shell is perhaps the most important<br>
+              tasks included with the RTOS.<br><br>
+
+              <b>Preemptive and Cooperative Enforcement:</b> The RTOS can operate in both a Cooperative and Preemptive mode,<br>
+              toggled using another Shell command. In Cooperative mode, tasks must be willing to yield the CPU. In Preemptive<br>
+              mode, tasks are forced to yield the CPU after 1ms of execution, forcing a context switch.<br><br>
+
+              <b>Memory Protection:</b> As mentioned, tasks are limited to their allocated memory stack. Upon the task's<br>
+              creation, a custom malloc() is called, allocating requisite SRAM to the task to use when executing. The<br>
+              microcontroller's included MPU is utilized to enforce the R/W privileges of each task, preventing the task from<br>
+              using another task's memory, and strictly protecting the Kernel's stack.
+            </p>
+        </div>
+
+        <img width="450" height="300" src="RTOS3.png" alt="Example Shell output from the RTOS" /><br>
+
+        <div class="container">
+          <div class="section-box" style="width: 1000px;">
+            <div class="title-bar">
+              <span class="app-title"><font size="4">Tasks</font></span>
+              <span class="close-button">✖</span>
+            </div>
+            <p>
+              One of the primary purposes of an RTOS is to enable the use of multiple tasks/programs/threads at the "same"<br>
+              time. As a result, multiple tasks were created to test the various features of the RTOS described below. These<br>
+              tasks do various things. All of these tasks can be found in the files <i><b>tasks.c/h</b></i>:<br><br>
+
+              - Simulating a task that demands a lot of CPU time with <b>LengthyFn()</b>, testing the RTOS's preemptive enforcement.<br>
+              - A task that visualizes CPU idle time, <b>Idle()</b>. This task runs in the background at the lowest priority, always<br>
+              toggling an LED and yielding the CPU to other tasks. The brightness of the attached LED visually describes<br>
+              how idle the CPU is at any given time.<br>
+              - Simulating a task with high importance with <b>Important()</b>, testing the RTOS's Priority Inheritance and<br>
+              Enforcement. The priority of each task can also be altered during the RTOS's execution.<br>
+              - Numerous tasks that simulate the ownership and queuing of semaphores and mutexes.
+            </p>
+        </div>
+
+        <img width="800" height="450" src="RTOS4.JPG" alt="The physical hardware used in the RTOS" /><br>
+
+        <div class="container">
+          <div class="section-box" style="width: 750px;">
+            <div class="title-bar">
+              <span class="app-title"><font size="4">Conclusion</font></span>
+              <span class="close-button">✖</span>
+            </div>
+            <p>
+            Through this project, I developed a strong understanding of real-time operating<br>
+            systems and embedded software design. Building the RTOS from scratch sharpened my<br>
+            skills in C programming, task scheduling, context switching, and memory protection<br>
+            using the MPU. Implementing features such as preemptive and cooperative modes,<br>
+            custom stack allocation, and a UART-based shell taught me how low-level hardware<br>
+            and OS concepts work together in a reliable system. Working directly with the<br>
+            microcontroller, LEDs, and push buttons also strengthened my experience with<br>
+            embedded I/O and debugging. Overall, this project solidified my ability to design<br>
+            and implement robust, hardware-driven software systems.
+          </p>
+        </div>
+
+        <a href="index.html"><h3>Back to the home page</h3></a>
+    </body>
+</html>
